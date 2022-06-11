@@ -1,20 +1,20 @@
 import React from 'react';
 import closeiconPath from '../images/closeicon.svg';
 
-function ImagePopup() {
+function ImagePopup({ card, onClose }) {
   return (
     <>
-      <div class="popup popup-img">
-        <div class="popup-img__wrapper">
-          <img
-            class="popup-img__img"
-            src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg"
-            alt="alt"
-          />
-          <h2 class="popup-img__title">title</h2>
-          <button class="popup-img__close popup__close" type="button">
+      <div className={`popup popup-img ${card.src ? 'popup_opened' : ''}`}>
+        <div className="popup-img__wrapper">
+          <img className="popup-img__img" src={card.src} alt="alt" />
+          <h2 className="popup-img__title">{card.title}</h2>
+          <button
+            className="popup-img__close popup__close"
+            type="button"
+            onClick={onClose}
+          >
             <img
-              class="popup__close-img"
+              className="popup__close-img"
               alt="кнопка закрытия поп-апа."
               src={closeiconPath}
             />

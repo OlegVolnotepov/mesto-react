@@ -10,19 +10,19 @@ function AddPlacePopup({ isOpen, onClose }) {
       onClose={onClose}
     >
       <input
-        class="popup__input"
+        className="popup__input"
         name="title"
         id="card-title"
         type="text"
         placeholder="Название"
         value=""
         required
-        minlength="2"
-        maxlength="30"
+        minLength="2"
+        maxLength="30"
       />
-      <span class="popup__error card-title-error" />
+      <span className="popup__error card-title-error" />
       <input
-        class="popup__input popup__input_url"
+        className="popup__input popup__input_url"
         name="link"
         id="card-url"
         type="url"
@@ -30,10 +30,10 @@ function AddPlacePopup({ isOpen, onClose }) {
         value=""
         required
       />
-      <span class="popup__error card-url-error" />
+      <span className="popup__error card-url-error" />
       <button
         type="submit"
-        class="popup__button popup-card__button popup__button_disabled"
+        className="popup__button popup-card__button popup__button_disabled"
         disabled
       >
         Сохранить

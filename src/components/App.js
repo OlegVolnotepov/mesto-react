@@ -15,6 +15,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
 
   function handleEditAvatarClick() {
     setEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -28,11 +29,16 @@ function App() {
     setisAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
+  function handleCardClick(src, title) {
+    setSelectedCard({ src, title });
+    console.log(selectedCard);
+  }
+  //TODO сократить
   function closeAllPopups() {
-    console.log('test');
     setisAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setSelectedCard({});
   }
 
   return (
@@ -42,6 +48,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
 
       <EditAvatarPopup
@@ -54,30 +61,7 @@ function App() {
       />
       <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
 
-      <div>
-        <ul className="elements">
-          <template id="elements__card">
-            <li className="elements__card">
-              <img
-                className="elements__img"
-                src="'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'"
-                alt=""
-              />
-              <div className="elements__summary">
-                <p className="elements__title">Тайтл</p>
-                <button className="elements__trash"></button>
-                <div className="elements__like-group">
-                  <button
-                    className="elements__like"
-                    id="elements__like"
-                  ></button>
-                  <div className="elements__like-counter">0</div>
-                </div>
-              </div>
-            </li>
-          </template>
-        </ul>
-      </div>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
       <Footer />
     </div>

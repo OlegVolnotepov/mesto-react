@@ -10,30 +10,30 @@ function EditProfilePopup({ isOpen, onClose }) {
       onClose={onClose}
     >
       <input
-        class="popup__input"
+        className="popup__input"
         id="name"
         name="name"
         type="text"
         placeholder="Имя"
         value=""
-        minlength="2"
-        maxlength="40"
+        minLength="2"
+        maxLength="40"
         required
       />
-      <span class="popup__error name-error" />
+      <span className="popup__error name-error" />
       <input
-        class="popup__input popup__input_url"
+        className="popup__input popup__input_url"
         name="about"
         id="about"
         type="text"
         placeholder="О себе"
         value=""
-        minlength="2"
-        maxlength="200"
+        minLength="2"
+        maxLength="200"
         required
       />
-      <span class="popup__error about-error" />
-      <button type="submit" class="popup__button">
+      <span className="popup__error about-error" />
+      <button type="submit" className="popup__button">
         Сохранить
       </button>
     </PopupWithForm>

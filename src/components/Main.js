@@ -1,25 +1,48 @@
 import React from 'react';
-
-import logoPath from '../images/logo.svg';
-import closeiconPath from '../images/closeicon.svg';
 import plusButtonPath from '../images/plus.svg';
 import editButtonPath from '../images/edit_button.svg';
-import avatarPath from '../images/avatar.jpg';
+import Card from './Card';
 import api from '../utils/Api';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
+function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState([]);
+  const [userAvatar, setUserAvatar] = React.useState([]);
+  const [cards, setCards] = React.useState([]);
+
+  React.useEffect(() => {
+    api.getUser().then((data) => {
+      setUserName(data.name);
+      setUserDescription(data.about);
+      setUserAvatar(data.avatar);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    api.getAllCards().then((data) => {
+      setCards(
+        data.map((item) => ({
+          name: item.name,
+          link: item.link,
+          likes: item.likes,
+          id: item._id,
+        }))
+      );
+    });
+  }, []);
+
   return (
     <main>
       <section className="profile">
         <div className="profile__wrapper">
-          <img src={avatarPath} className="profile__avatar" alt="аватар." />
+          <img src={userAvatar} className="profile__avatar" alt="аватар." />
           <button
             onClick={onEditAvatar}
             className="profile__avatar-button"
           ></button>
           <div className="profile__info">
             <div className="profile__name-wrapper">
-              <h1 className="profile__name">Жак</h1>
+              <h1 className="profile__name">{userName}</h1>
               <button
                 onClick={onEditProfile}
                 className="profile__edit-button"
@@ -32,36 +55,25 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar }) {
                 />
               </button>
             </div>
-            <p className="profile__about">Исследователь</p>
+            <p className="profile__about">{userDescription}</p>
           </div>
         </div>
         <button onClick={onAddPlace} className="profile__add-button">
           <img src={plusButtonPath} alt="кнопка Добавить." />
         </button>
       </section>
-
       <div>
         <ul className="elements">
-          <template id="elements__card">
-            <li className="elements__card">
-              <img
-                className="elements__img"
-                src="'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'"
-                alt=""
-              />
-              <div className="elements__summary">
-                <p className="elements__title">Тайтл</p>
-                <button className="elements__trash"></button>
-                <div className="elements__like-group">
-                  <button
-                    className="elements__like"
-                    id="elements__like"
-                  ></button>
-                  <div className="elements__like-counter">0</div>
-                </div>
-              </div>
-            </li>
-          </template>
+          {cards.map((card) => (
+            //<Card key={card.id} {...card} onCardClick={test} />
+            <Card
+              key={card.id}
+              src={card.link}
+              title={card.name}
+              onCardClick={onCardClick}
+              likes={card.likes.length}
+            />
+          ))}
         </ul>
       </div>
     </main>
