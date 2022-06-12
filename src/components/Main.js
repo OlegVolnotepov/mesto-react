@@ -16,9 +16,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
       setUserDescription(data.about);
       setUserAvatar(data.avatar);
     });
-  }, []);
 
-  React.useEffect(() => {
     api.getAllCards().then((data) => {
       setCards(
         data.map((item) => ({
