@@ -66,12 +66,19 @@ class Api {
     }).then((res) => this._checkResponse(res));
   }
 
+  changeLikeCardStatus(cardId, isLiked) {
+    return fetch(`${this._url}/cards/${cardId}/likes`, {
+      method: `${!isLiked ? 'DELETE' : 'PUT'}`,
+      headers: this._headers,
+    }).then((res) => this._checkResponse(res));
+  }
+
   updateAvatar(data) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: data.link,
+        avatar: data.avatar,
       }),
     }).then((res) => this._checkResponse(res));
   }

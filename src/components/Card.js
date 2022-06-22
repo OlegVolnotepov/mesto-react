@@ -1,6 +1,38 @@
-function Card({ src, title, likes, onCardClick }) {
+import React from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+
+function Card({
+  src,
+  title,
+  likes,
+  id,
+  onCardClick,
+  owner,
+  onCardLike,
+  onCardDelete,
+}) {
+  const currentUser = React.useContext(CurrentUserContext);
+  //console.log(currentUser);
+  const isOwn = owner === currentUser._id;
+  const trashClass = isOwn
+    ? `elements__trash elements__trash_active`
+    : `elements__trash`;
+
+  const isLiked = likes.some((i) => i._id === currentUser._id);
+  const likeClass = isLiked
+    ? `elements__like elements__like_active`
+    : `elements__like`;
+
   function handleClick() {
     onCardClick(src, title);
+  }
+
+  function handleLikeClick() {
+    onCardLike(likes, id);
+  }
+
+  function handleDeleteClick() {
+    onCardDelete(id);
   }
 
   return (
@@ -13,10 +45,14 @@ function Card({ src, title, likes, onCardClick }) {
       />
       <div className="elements__summary">
         <p className="elements__title">{title}</p>
-        <button className="elements__trash"></button>
+        <button className={trashClass} onClick={handleDeleteClick}></button>
         <div className="elements__like-group">
-          <button className="elements__like" id="elements__like"></button>
-          <div className="elements__like-counter">{likes}</div>
+          <button
+            className={likeClass}
+            id="elements__like"
+            onClick={handleLikeClick}
+          ></button>
+          <div className="elements__like-counter">{likes.length}</div>
         </div>
       </div>
     </li>

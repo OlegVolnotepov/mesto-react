@@ -23,6 +23,7 @@
 @import url(../../mesto-react/src/blocks/elements/__summary/elements__summary.css);
 @import url(../../mesto-react/src/blocks/elements/__img/elements__img.css);
 @import url(../../mesto-react/src/blocks/elements/__trash/elements__trash.css);
+@import url(../../mesto-react/src/blocks/elements/__trash/_active/elements__trash_active.css);
 @import url(../../mesto-react/src/blocks/elements/__like-counter/elements__like-counter.css);
 @import url(../../mesto-react/src/blocks/elements/__like-group/elements__like-group.css);
 @import url(../../mesto-react/src/blocks/popup/popup.css);
