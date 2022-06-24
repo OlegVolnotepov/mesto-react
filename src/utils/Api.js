@@ -17,13 +17,13 @@ class Api {
     }).then((res) => this._checkResponse(res));
   }
 
-  addNewCard(data) {
+  addNewCard(name, url) {
     return fetch(`${this._url}/cards`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: data.title,
-        link: data.link,
+        name: name,
+        link: url,
       }),
     }).then((res) => this._checkResponse(res));
   }

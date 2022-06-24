@@ -5,46 +5,16 @@ import Card from './Card';
 import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
-  const [cards, setCards] = React.useState([]);
+function Main({
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
+}) {
   const currentUser = React.useContext(CurrentUserContext);
-
-  React.useEffect(() => {
-    api.getAllCards().then((data) => {
-      setCards(
-        data.map((item) => ({
-          name: item.name,
-          link: item.link,
-          likes: item.likes,
-          id: item._id,
-          owner: item.owner._id,
-        }))
-      );
-    });
-  }, []);
-
-  function handleCardLike(card, cardId) {
-    // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.some((i) => i._id === currentUser._id);
-    // Отправляем запрос в API и получаем обновлённые данные карточки
-
-    api.changeLikeCardStatus(cardId, !isLiked).then((data) => {
-      const newCard = {
-        name: data.name,
-        link: data.link,
-        likes: data.likes,
-        id: data._id,
-        owner: data.owner._id,
-      };
-      setCards((state) => state.map((c) => (c.id === cardId ? newCard : c)));
-    });
-  }
-
-  function handleCardDelete(cardId) {
-    api
-      .deleteCard(cardId)
-      .then(setCards((state) => state.filter((c) => c.id != cardId)));
-  }
 
   return (
     <main>
@@ -93,8 +63,8 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
               onCardClick={onCardClick}
               likes={card.likes}
               owner={card.owner}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           ))}
         </ul>
