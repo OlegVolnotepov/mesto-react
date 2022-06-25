@@ -9,10 +9,7 @@ function DeletePopup({ isOpen, onClose }) {
       isOpen={isOpen}
       onClose={onClose}
     >
-      <button
-        type="submit"
-        className="popup__button popup-remove-card__button popup_opened"
-      >
+      <button type="submit" className="popup__button popup-remove-card__button">
         Да
       </button>
     </PopupWithForm>

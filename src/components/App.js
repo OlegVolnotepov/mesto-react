@@ -93,6 +93,7 @@ function App() {
     setisAddPlacePopupOpen(false);
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
+    setDeletePopupOpen(false);
     setSelectedCard({});
   }
 
@@ -187,7 +188,7 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
           saveButton={saveButton}
         />
-        <DeletePopup isOpen={isDeletePopupOpen} />
+        <DeletePopup isOpen={isDeletePopupOpen} onClose={closeAllPopups} />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
