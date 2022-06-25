@@ -20,6 +20,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
     React.useState(false);
   const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = React.useState(false);
+  const [isDeletePopupOpen, setDeletePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setcurrentUser] = React.useState({});
   const [saveButton, setSaveButton] = React.useState(false);
@@ -65,7 +66,6 @@ function App() {
   React.useEffect(() => {
     api.getUser().then((data) => {
       setcurrentUser(data);
-      //console.log(`currentUser ${currentUser}`);
     });
   }, []);
 
@@ -81,9 +81,12 @@ function App() {
     setisAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
+  function handleDeleteCardClick() {
+    setDeletePopupOpen(!isDeletePopupOpen);
+  }
+
   function handleCardClick(src, title) {
     setSelectedCard({ src, title });
-    console.log(selectedCard);
   }
 
   function closeAllPopups() {
@@ -94,21 +97,39 @@ function App() {
   }
 
   function handleUpdateUser(data) {
-    api.setUserInfo(data).then((response) => {
-      setcurrentUser(response);
-      closeAllPopups();
-    });
+    loadButton(true);
+    api
+      .setUserInfo(data)
+      .then((response) => {
+        setcurrentUser(response);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => {
+        loadButton(false);
+      });
   }
 
   function handleUpdateAvatar(data) {
-    api.updateAvatar(data).then((response) => {
-      setcurrentUser(response);
-      closeAllPopups();
-    });
+    loadButton(true);
+    api
+      .updateAvatar(data)
+      .then((response) => {
+        setcurrentUser(response);
+        closeAllPopups();
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => {
+        loadButton(false);
+      });
   }
 
   function handleAddPlaceSubmit(name, url) {
-    loadButton(false);
+    loadButton(true);
     api
       .addNewCard(name, url)
       .then((data) => {
@@ -122,8 +143,11 @@ function App() {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
       .finally(() => {
-        loadButton(true);
+        loadButton(false);
       });
   }
 
@@ -149,11 +173,13 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+          saveButton={saveButton}
         />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser}
+          saveButton={saveButton}
         />
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
@@ -161,6 +187,7 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
           saveButton={saveButton}
         />
+        <DeletePopup isOpen={isDeletePopupOpen} />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 

@@ -2,8 +2,10 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, saveButton }) {
   const currentUser = React.useContext(CurrentUserContext);
+  const [errorMessageName, setErrorMessageName] = React.useState();
+  const [errorMessageAbout, setErrorMessageAbout] = React.useState();
 
   React.useEffect(() => {
     setName(currentUser.name);
@@ -15,10 +17,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
   function handleChangeName(evt) {
     setName(evt.target.value);
+    setErrorMessageName(evt.target.validationMessage);
   }
 
   function handleChangeDescription(evt) {
     setDescription(evt.target.value);
+    setErrorMessageAbout(evt.target.validationMessage);
   }
 
   function handleSubmit(event) {
@@ -50,7 +54,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         onChange={handleChangeName}
       />
-      <span className="popup__error name-error" />
+      <span className="popup__error name-error">{errorMessageName}</span>
       <input
         className="popup__input popup__input_url"
         name="about"
@@ -63,9 +67,17 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         onChange={handleChangeDescription}
       />
-      <span className="popup__error about-error" />
-      <button type="submit" className="popup__button">
-        Сохранить
+      <span className="popup__error about-error">{errorMessageAbout}</span>
+      <button
+        disabled={!errorMessageName && !errorMessageAbout ? '' : 'disabled'}
+        type="submit"
+        className={
+          !errorMessageName && !errorMessageAbout
+            ? 'popup__button'
+            : 'popup__button popup__button_disabled'
+        }
+      >
+        {!saveButton ? 'Сохранить' : 'Сохранение...'}
       </button>
     </PopupWithForm>
   );

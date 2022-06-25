@@ -1,8 +1,9 @@
 import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, saveButton }) {
   const avatarRef = React.useRef();
+  const [errorMessage, setErrorMessage] = React.useState(' ');
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -11,6 +12,10 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
       avatar: avatarRef.current.value,
     });
     event.target.reset();
+  }
+
+  function checkValidity(evt) {
+    setErrorMessage(evt.target.validationMessage);
   }
 
   return (
@@ -29,10 +34,20 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
         placeholder="Ссылка на картинку"
         required
         ref={avatarRef}
+        defaultValue=""
+        onChange={checkValidity}
       />
-      <span className="popup__error avatar-url-error" />
-      <button type="submit" className="popup__button">
-        Сохранить
+      <span className="popup__error avatar-url-error">{errorMessage}</span>
+      <button
+        disabled={!errorMessage ? '' : 'disabled'}
+        type="submit"
+        className={
+          !errorMessage
+            ? 'popup__button'
+            : 'popup__button popup__button_disabled'
+        }
+      >
+        {!saveButton ? 'Сохранить' : 'Сохранение...'}
       </button>
     </PopupWithForm>
   );

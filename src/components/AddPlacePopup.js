@@ -4,19 +4,23 @@ import PopupWithForm from './PopupWithForm';
 function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
   const [name, setName] = React.useState(false);
   const [url, setEditProfilePopupOpen] = React.useState(false);
+  const [errorMessageSummary, setErrorMessageSummary] = React.useState(' ');
+  const [errorMessageUrl, setErrorMessageUrl] = React.useState(' ');
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit(evt) {
+    evt.preventDefault();
     onAddPlace(name, url);
-    event.target.reset();
+    evt.target.reset();
   }
 
   function handleChangeName(evt) {
     setName(evt.target.value);
+    setErrorMessageSummary(evt.target.validationMessage);
   }
 
   function handleChangeUrl(evt) {
     setEditProfilePopupOpen(evt.target.value);
+    setErrorMessageUrl(evt.target.validationMessage);
   }
 
   return (
@@ -39,7 +43,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
         maxLength="30"
         onChange={handleChangeName}
       />
-      <span className="popup__error card-title-error" />
+      <span className="popup__error card-title-error">
+        {errorMessageSummary}
+      </span>
       <input
         className="popup__input popup__input_url"
         name="link"
@@ -50,8 +56,16 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
         onChange={handleChangeUrl}
         required
       />
-      <span className="popup__error card-url-error" />
-      <button type="submit" className="popup__button popup-card__button">
+      <span className="popup__error card-url-error">{errorMessageUrl}</span>
+      <button
+        type="submit"
+        className={
+          !errorMessageSummary && !errorMessageUrl
+            ? 'popup__button'
+            : 'popup__button popup__button_disabled'
+        }
+        disabled={!errorMessageSummary && !errorMessageUrl ? '' : 'disabled'}
+      >
         {!saveButton ? 'Сохранить' : 'Сохранение...'}
       </button>
     </PopupWithForm>
