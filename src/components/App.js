@@ -24,6 +24,7 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setcurrentUser] = React.useState({});
   const [saveButton, setSaveButton] = React.useState(false);
+  const [cardIdForDelete, setCardIdForDelete] = React.useState('');
 
   const [cards, setCards] = React.useState([]);
   React.useEffect(() => {
@@ -57,10 +58,15 @@ function App() {
     });
   }
 
-  function handleCardDelete(cardId) {
+  function handleCardDelete() {
+    loadButton(true);
     api
-      .deleteCard(cardId)
-      .then(setCards((state) => state.filter((c) => c.id != cardId)));
+      .deleteCard(cardIdForDelete)
+      .then(setCards((state) => state.filter((c) => c.id != cardIdForDelete)))
+      .finally(() => {
+        loadButton(false);
+        closeAllPopups();
+      });
   }
 
   React.useEffect(() => {
@@ -81,7 +87,8 @@ function App() {
     setisAddPlacePopupOpen(!isAddPlacePopupOpen);
   }
 
-  function handleDeleteCardClick() {
+  function handleDeleteCardClick(id) {
+    setCardIdForDelete(id);
     setDeletePopupOpen(!isDeletePopupOpen);
   }
 
@@ -167,7 +174,8 @@ function App() {
           onCardClick={handleCardClick}
           cards={cards}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          /*onCardDelete={handleCardDelete}*/
+          onCardDelete={handleDeleteCardClick}
         />
 
         <EditAvatarPopup
@@ -188,7 +196,12 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
           saveButton={saveButton}
         />
-        <DeletePopup isOpen={isDeletePopupOpen} onClose={closeAllPopups} />
+        <DeletePopup
+          isOpen={isDeletePopupOpen}
+          onClose={closeAllPopups}
+          onDeleteCard={handleCardDelete}
+          saveButton={saveButton}
+        />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 

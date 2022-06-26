@@ -27,6 +27,7 @@
 @import url(../../mesto-react/src/blocks/elements/__like-counter/elements__like-counter.css);
 @import url(../../mesto-react/src/blocks/elements/__like-group/elements__like-group.css);
 @import url(../../mesto-react/src/blocks/popup/popup.css);
+@import url(../../mesto-react/src/blocks/popup-delete/__form/popup-delete__form.css);
 @import url(../../mesto-react/src/blocks/popup/__form/popup__form.css);
 @import url(../../mesto-react/src/blocks/popup/__title/popup__title.css);
 @import url(../../mesto-react/src/blocks/popup/__input/popup__input.css);
