@@ -2,8 +2,8 @@ import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
-  const [name, setName] = React.useState(false);
-  const [url, setEditProfilePopupOpen] = React.useState(false);
+  const [name, setName] = React.useState('');
+  const [url, setUrl] = React.useState(false);
   const [errorMessageSummary, setErrorMessageSummary] = React.useState(' ');
   const [errorMessageUrl, setErrorMessageUrl] = React.useState(' ');
 
@@ -19,7 +19,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
   }
 
   function handleChangeUrl(evt) {
-    setEditProfilePopupOpen(evt.target.value);
+    setUrl(evt.target.value);
     setErrorMessageUrl(evt.target.validationMessage);
   }
 
