@@ -28,17 +28,22 @@ function App() {
 
   const [cards, setCards] = React.useState([]);
   React.useEffect(() => {
-    api.getAllCards().then((data) => {
-      setCards(
-        data.map((item) => ({
-          name: item.name,
-          link: item.link,
-          likes: item.likes,
-          id: item._id,
-          owner: item.owner._id,
-        }))
-      );
-    });
+    api
+      .getAllCards()
+      .then((data) => {
+        setCards(
+          data.map((item) => ({
+            name: item.name,
+            link: item.link,
+            likes: item.likes,
+            id: item._id,
+            owner: item.owner._id,
+          }))
+        );
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }, []);
 
   function handleCardLike(card, cardId) {
@@ -46,23 +51,31 @@ function App() {
     const isLiked = card.some((i) => i._id === currentUser._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
 
-    api.changeLikeCardStatus(cardId, !isLiked).then((data) => {
-      const newCard = {
-        name: data.name,
-        link: data.link,
-        likes: data.likes,
-        id: data._id,
-        owner: data.owner._id,
-      };
-      setCards((state) => state.map((c) => (c.id === cardId ? newCard : c)));
-    });
+    api
+      .changeLikeCardStatus(cardId, !isLiked)
+      .then((data) => {
+        const newCard = {
+          name: data.name,
+          link: data.link,
+          likes: data.likes,
+          id: data._id,
+          owner: data.owner._id,
+        };
+        setCards((state) => state.map((c) => (c.id === cardId ? newCard : c)));
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }
 
   function handleCardDelete() {
     loadButton(true);
     api
       .deleteCard(cardIdForDelete)
-      .then(setCards((state) => state.filter((c) => c.id != cardIdForDelete)))
+      .then(setCards((state) => state.filter((c) => c.id !== cardIdForDelete)))
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
       .finally(() => {
         loadButton(false);
         closeAllPopups();
@@ -70,9 +83,14 @@ function App() {
   }
 
   React.useEffect(() => {
-    api.getUser().then((data) => {
-      setcurrentUser(data);
-    });
+    api
+      .getUser()
+      .then((data) => {
+        setcurrentUser(data);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   }, []);
 
   function handleEditAvatarClick() {

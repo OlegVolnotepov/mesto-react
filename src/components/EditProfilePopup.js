@@ -10,10 +10,10 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, saveButton }) {
   React.useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, isOpen]);
 
-  const [name, setName] = React.useState([]);
-  const [description, setDescription] = React.useState([]);
+  const [name, setName] = React.useState('');
+  const [description, setDescription] = React.useState('');
 
   function handleChangeName(evt) {
     setName(evt.target.value);
@@ -48,7 +48,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, saveButton }) {
         name="name"
         type="text"
         placeholder="Имя"
-        value={name}
+        value={name || ''}
         minLength="2"
         maxLength="40"
         required
@@ -61,7 +61,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, saveButton }) {
         id="about"
         type="text"
         placeholder="О себе"
-        value={description}
+        value={description || ''}
         minLength="2"
         maxLength="200"
         required
@@ -69,12 +69,12 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, saveButton }) {
       />
       <span className="popup__error about-error">{errorMessageAbout}</span>
       <button
-        disabled={!errorMessageName && !errorMessageAbout ? '' : 'disabled'}
+        disabled={errorMessageName || errorMessageAbout ? 'disabled' : ''}
         type="submit"
         className={
-          !errorMessageName && !errorMessageAbout
-            ? 'popup__button'
-            : 'popup__button popup__button_disabled'
+          errorMessageName || errorMessageAbout
+            ? 'popup__button popup__button_disabled'
+            : 'popup__button'
         }
       >
         {!saveButton ? 'Сохранить' : 'Сохранение...'}

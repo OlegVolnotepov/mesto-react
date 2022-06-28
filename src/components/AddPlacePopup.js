@@ -3,7 +3,7 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
   const [name, setName] = React.useState('');
-  const [url, setUrl] = React.useState(false);
+  const [url, setUrl] = React.useState('');
   const [errorMessageSummary, setErrorMessageSummary] = React.useState(' ');
   const [errorMessageUrl, setErrorMessageUrl] = React.useState(' ');
 
@@ -11,6 +11,8 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
     evt.preventDefault();
     onAddPlace(name, url);
     evt.target.reset();
+    setErrorMessageSummary(' ');
+    setErrorMessageUrl(' ');
   }
 
   function handleChangeName(evt) {
@@ -60,11 +62,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, saveButton }) {
       <button
         type="submit"
         className={
-          !errorMessageSummary && !errorMessageUrl
-            ? 'popup__button'
-            : 'popup__button popup__button_disabled'
+          errorMessageSummary || errorMessageUrl
+            ? 'popup__button popup__button_disabled'
+            : 'popup__button'
         }
-        disabled={!errorMessageSummary && !errorMessageUrl ? '' : 'disabled'}
+        disabled={errorMessageSummary || errorMessageUrl ? 'disabled' : ''}
       >
         {!saveButton ? 'Сохранить' : 'Сохранение...'}
       </button>
